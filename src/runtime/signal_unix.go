@@ -557,7 +557,7 @@ func sighandler(sig uint32, info *siginfo, ctxt unsafe.Pointer, gp *g) {
 		// causes a memory fault. Don't turn that into a panic.
 		flags = _SigThrow
 	}
-	if c.sigcode() != _SI_USER && flags&_SigPanic != 0 {
+	if (c.sigcode() != _SI_USER || sig == _SIGBUS) && flags&_SigPanic != 0 {
 		// The signal is going to cause a panic.
 		// Arrange the stack so that it looks like the point
 		// where the signal occurred made a call to the
